@@ -4,10 +4,11 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 
-
-public class BotResponseHandler : MonoBehaviour
+namespace Mangrove
 {
-    public bool Disable = false;
+    public class BotResponseHandler : MonoBehaviour
+    {
+        public bool Disable = false;
 
 //     [SerializeField]
 //     private ApplicationReferences applicationReferences;
@@ -25,8 +26,8 @@ public class BotResponseHandler : MonoBehaviour
 //     private bool isSampleTagging = false;
 //     private string sampleTaggingId;
 //     private bool isRetried = false;
-    private Queue<BotResponse> responsesQueue;
-    private AIClient clientController;
+        private Queue<BotResponse> responsesQueue;
+        private AIClient clientController;
 
 //     private delegate void HandleDelegate(string action, string[] additionalInfo);
 //     private Dictionary<string, HandleDelegate> handleDict;
@@ -34,54 +35,59 @@ public class BotResponseHandler : MonoBehaviour
 //     private List<string> possibleTargets;
 
 
-    /// <summary>
-    /// Singleton access
-    /// </summary>
-    private static BotResponseHandler _instance;
-    public static BotResponseHandler Instance
-    {
-        get
-        {  
+        /// <summary>
+        /// Singleton access
+        /// </summary>
+        private static BotResponseHandler _instance;
+
+        public static BotResponseHandler Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    throw new Exception("BotResponseHandler could not find the BotResponseHandler object.");
+                }
+
+                return _instance;
+            }
+        }
+
+        public BotResponseHandler()
+        {
+
+            // initHandleDict();
+        }
+
+        void Awake()
+        {
             if (_instance == null)
             {
-                throw new Exception ("BotResponseHandler could not find the BotResponseHandler object.");
+                _instance = this;
+                DontDestroyOnLoad(this.gameObject);
             }
-            return _instance;
+
+            responsesQueue = new Queue<BotResponse>();
+            if (Disable) return;
+            // uiManager = applicationReferences.uiManager;
+            // mapInteraction = applicationReferences.mapInteraction;
+            // senvaConnScript = applicationReferences.SENVAConnScript;
+            // eyeTrackerInteractionManager = applicationReferences.eyeTrackerInteractionManager;
+            // if (applicationReferences.anomalyPopup != null) {
+            //     anomalyPopup = applicationReferences.anomalyPopup.GetComponent<AnomalyPopup>();
+            // }
         }
-    }
 
-    public BotResponseHandler() {
-        
-        // initHandleDict();
-    }
-
-	void Awake() {
-		if (_instance == null) {
-			_instance = this;
-			DontDestroyOnLoad(this.gameObject);
-		}
-       
-        responsesQueue = new Queue<BotResponse>();
-        if (Disable) return;
-        // uiManager = applicationReferences.uiManager;
-        // mapInteraction = applicationReferences.mapInteraction;
-        // senvaConnScript = applicationReferences.SENVAConnScript;
-        // eyeTrackerInteractionManager = applicationReferences.eyeTrackerInteractionManager;
-        // if (applicationReferences.anomalyPopup != null) {
-        //     anomalyPopup = applicationReferences.anomalyPopup.GetComponent<AnomalyPopup>();
-        // }
-	}
-
-    void Start()
-    {
-        if (Disable) return;
-        // _camera = GameObject.Find("Main Camera");
-        // miniMap = GameObject.Find("Minimap");
-        clientController = AIClient.Instance;
-        // isSampleTagging = false;
-        // uiManager = applicationReferences.uiManager;
-        // mapInteraction = applicationReferences.mapInteraction;
-    }
+        void Start()
+        {
+            if (Disable) return;
+            // _camera = GameObject.Find("Main Camera");
+            // miniMap = GameObject.Find("Minimap");
+            clientController = AIClient.Instance;
+            // isSampleTagging = false;
+            // uiManager = applicationReferences.uiManager;
+            // mapInteraction = applicationReferences.mapInteraction;
+        }
 
 //     private void DispatchCommand(string key, Action callback)
 //     {
@@ -99,7 +105,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 Debug.Log("Testing");
 //                 _Handle(responsesQueue.Dequeue());
 //             }
-//         } 
+//         }
 //     }
 
 //     void initHandleDict() {
@@ -175,7 +181,7 @@ public class BotResponseHandler : MonoBehaviour
 //             for (i = 1; i <= n; i++)
 //             {
 //                 int cost = s[i - 1] == tJ ? 0 : 1; // cost
-//                 // minimum of cell to the left+1, to the top+1, diagonally left and up +cost                
+//                 // minimum of cell to the left+1, to the top+1, diagonally left and up +cost
 //                 d[i] = Math.Min(Math.Min(d[i - 1] + 1, p[i] + 1), p[i - 1] + cost);
 //             }
 
@@ -185,7 +191,7 @@ public class BotResponseHandler : MonoBehaviour
 //             d = dPlaceholder;
 //         }
 
-//         // our last action in the above loop was to switch d and p, so p now 
+//         // our last action in the above loop was to switch d and p, so p now
 //         // actually has the most recent cost counts
 //         int finalDistance = p[n];
 //         if (finalDistance / s.Length > threshold) {
@@ -198,22 +204,23 @@ public class BotResponseHandler : MonoBehaviour
 //         clientController.RequestBotToRead(additionalInfo[0]);
 //     }
 
-    public void Handle(BotResponse botResponse)
-    {
-        lock(responsesQueue) {
-            Debug.Log("Enqueuing a botResponse");
-            Debug.Log(botResponse);
-            // BotResponse botResponse = JsonConvert.DeserializeObject<BotResponse>(botResponseJson);
-            Debug.Log($"object BotResponse {botResponse.ToString()}");
-            responsesQueue.Enqueue(botResponse);
+        public void Handle(BotResponse botResponse)
+        {
+            lock (responsesQueue)
+            {
+                Debug.Log("Enqueuing a botResponse");
+                Debug.Log(botResponse);
+                // BotResponse botResponse = JsonConvert.DeserializeObject<BotResponse>(botResponseJson);
+                Debug.Log($"object BotResponse {botResponse.ToString()}");
+                responsesQueue.Enqueue(botResponse);
+            }
         }
-    }
 
 //     // public void Handle(BotResponse botResponse) {
 //     //     _Handle(botResponse);
 //     // }
 
-//     private void _Handle(BotResponse botResponse) 
+//     private void _Handle(BotResponse botResponse)
 //     {
 //         // if (isSampleTagging)
 //         // {
@@ -225,7 +232,7 @@ public class BotResponseHandler : MonoBehaviour
 //         // Debug.Log("_Handele being called***************************");
 //         // Debug.Log(botResponse);
 //         // Debug.Log(handleDict);
-        
+
 //         foreach (Command command in botResponse.commands)
 //         {
 //             List<string> strList = new List<string>();
@@ -247,7 +254,7 @@ public class BotResponseHandler : MonoBehaviour
 //             }
 //             // Debug.Log("target is " + target + " action is " + command.action.ToLower());
 //             handleDict[target](command.action.ToLower(), strList.ToArray());
-//         } 
+//         }
 //     }
 
 //     private void handlePanel(string action, string[] additionalInfo) {
@@ -334,7 +341,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 
 //     // private void handleSpectrometry(string action, string[] additionalInfo) {
 //     //     switch(action) {
@@ -383,7 +390,7 @@ public class BotResponseHandler : MonoBehaviour
 //                     case "suit_pressure":
 //                         value = senvaConnScript.curMsg.simulationStates.suit_pressure.ToString();
 //                         unit = "Pounds per square inch";
-//                         break;      
+//                         break;
 //                     default:
 //                         feature = "data is not avaliable";
 //                         break;
@@ -505,12 +512,12 @@ public class BotResponseHandler : MonoBehaviour
 //         }
 //     }
 
-//     private void handleWaypoint(string action, string[] additionalInfo) {        
+//     private void handleWaypoint(string action, string[] additionalInfo) {
 //         string targetWaypoint = "";
 //         string mode = "";
 //         if (additionalInfo.Length >= 1) {
 //             targetWaypoint = additionalInfo[0];
-//         } 
+//         }
 //         if (additionalInfo.Length == 2) {
 //             mode = translateMode(additionalInfo[1]);
 //         }
@@ -554,7 +561,7 @@ public class BotResponseHandler : MonoBehaviour
 //             default:
 //                 break;
 //         }
-        
+
 //     }
 
 //     private string translateMode(string mode) {
@@ -618,7 +625,7 @@ public class BotResponseHandler : MonoBehaviour
 //         }
 //     }
 
-    
+
 
 //     private void handleShortNavigation(string action, string[] additionalInfo) {
 //         switch(action) {
@@ -650,7 +657,7 @@ public class BotResponseHandler : MonoBehaviour
 //         if (additionalInfo.Length >= 1) {
 //             targetLocation = additionalInfo[0];
 //         }
-        
+
 //         switch(action) {
 //             case "navigate":
 //                 //TODO
@@ -671,7 +678,7 @@ public class BotResponseHandler : MonoBehaviour
 //     }
 
 //     private void handleRoute(string action, string[] additionalInfo) {
-        
+
 //         string targetLocation = "";
 //         if (additionalInfo.Length >= 1) {
 //             targetLocation = additionalInfo[0];
@@ -687,7 +694,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleRover(string action, string[] additionalInfo) {
 //         // [A~J]
 //         string targetLocation = "";
@@ -706,7 +713,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleEgress(string action, string[] additionalInfo) {
 //         string targetInformation = "";
 //         if (additionalInfo.Length >= 1) {
@@ -738,7 +745,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleTSS(string action, string[] additionalInfo) {
 //         switch(action) {
 //             case "open":
@@ -751,7 +758,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleAI(string action, string[] additionalInfo) {
 //         switch(action) {
 //             case "open":
@@ -761,7 +768,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleIP(string action, string[] additionalInfo) {
 //         switch(action) {
 //             case "select":
@@ -777,7 +784,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleMenuManager(string action, string[] additionalInfo) {
 //         switch(action) {
 //             case "swap hand":
@@ -787,7 +794,7 @@ public class BotResponseHandler : MonoBehaviour
 //                 break;
 //         }
 //     }
-    
+
 //     private void handleAIManager(string action, string[] additionalInfo) {
 //         string targetFeature = "";
 //         if (additionalInfo.Length >= 1) {
@@ -875,23 +882,29 @@ public class BotResponseHandler : MonoBehaviour
 //     public bool isInSampleTaggingScenario() {
 //         return isSampleTagging;
 //     }
-}
+    }
 
-public class DataReadingInfo {
-    public string feature;
-    public string[] values;
-    public string[] units;
-
-    public override string ToString()
+    public class DataReadingInfo
     {
-        string result = "";
-        result += "feature: " + feature + " ";
-        foreach (string v in values) {
-            result += "value: " + v + " ";
+        public string feature;
+        public string[] values;
+        public string[] units;
+
+        public override string ToString()
+        {
+            string result = "";
+            result += "feature: " + feature + " ";
+            foreach (string v in values)
+            {
+                result += "value: " + v + " ";
+            }
+
+            foreach (string u in units)
+            {
+                result += "unit: " + u + " ";
+            }
+
+            return result;
         }
-        foreach (string u in units) {
-            result += "unit: " + u + " ";
-        }
-        return result;
     }
 }

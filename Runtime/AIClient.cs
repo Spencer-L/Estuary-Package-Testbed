@@ -26,7 +26,6 @@ namespace Mangrove
         private MicController micController;
         private BotVoice botVoice;
         private int status;
-        [SerializeField] private ApplicationReferences appRef;
 
         [field: SerializeField] public string api = "ws://localhost:4000";
 
@@ -194,7 +193,7 @@ namespace Mangrove
                 Debug.Log("WAKE UP EVENT RECEIVED");
                 // result.GetValue<IncomingDataPacket<short>>();
                 // Debug.Log($"WakeUp: {result}");
-                if (appRef && appRef.navManager) appRef.navManager.CallPuppy();
+                // if (appRef && appRef.navManager) appRef.navManager.CallPuppy();
                 Debug.Log("before StartCommandTransmission");
                 StartCommandTransmission();
                 Debug.Log("after StartCommandTransmission");
