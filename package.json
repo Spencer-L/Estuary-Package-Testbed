@@ -23,7 +23,7 @@
     {
       "displayName": "Server Connection",
       "description": "Contains a barebones scene that connects to a mangrove server",
-      "path": "Samples~/Server Connection"
+      "path": "Samples~/ServerConnection"
     }
   ]
 }
