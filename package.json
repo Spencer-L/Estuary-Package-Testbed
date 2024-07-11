@@ -2,7 +2,7 @@
   "name": "com.estuary.mangrove",
   "version": "1.0.1",
   "displayName": "Mangrove SDK",
-  "description": "This is an example package",
+  "description": "Mangrove SDK for connecting to a server running an Estuary instance.",
   "documentationUrl": "https://example.com/",
   "changelogUrl": "https://example.com/changelog.html",
   "licensesUrl": "https://example.com/licensing.html",
