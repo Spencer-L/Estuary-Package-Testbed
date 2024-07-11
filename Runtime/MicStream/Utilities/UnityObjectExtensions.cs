@@ -8,30 +8,27 @@
 
 using UnityEngine;
 
-namespace Mangrove
+public static class UnityObjectExtensions
 {
-    public static class UnityObjectExtensions
+    // Safely destroys
+    public static void DestroySafely(this Object unityObject)
     {
-        // Safely destroys
-        public static void DestroySafely(this Object unityObject)
+        // Ignore null
+        if (unityObject == null)
         {
-            // Ignore null
-            if (unityObject == null)
-            {
-                return;
-            }
-
-#if UNITY_EDITOR
-            // Editor only destroy
-            if (!Application.isPlaying)
-            {
-                MonoBehaviour.DestroyImmediate(unityObject);
-                return;
-            }
-#endif
-
-            // Destroy object
-            MonoBehaviour.Destroy(unityObject);
+            return;
         }
+
+        #if UNITY_EDITOR
+        // Editor only destroy
+        if (!Application.isPlaying)
+        {
+            MonoBehaviour.DestroyImmediate(unityObject);
+            return;
+        }
+        #endif
+
+        // Destroy object
+        MonoBehaviour.Destroy(unityObject);
     }
 }
