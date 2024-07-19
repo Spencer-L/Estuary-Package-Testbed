@@ -8,48 +8,51 @@
 
 using System;
 
-public interface IAudioInputSource
+namespace Mangrove
 {
-    /// <summary>
-    /// Invoked when the instance starts Recording.
-    /// </summary>
-    event Action OnStartRecording;
+    public interface IAudioInputSource
+    {
+        /// <summary>
+        /// Invoked when the instance starts Recording.
+        /// </summary>
+        event Action OnStartRecording;
 
-    /// <summary>
-    /// Invoked when an AudioClip couldn't be created to start recording.
-    /// </summary>
-    event Action OnStartRecordingFailed;
+        /// <summary>
+        /// Invoked when an AudioClip couldn't be created to start recording.
+        /// </summary>
+        event Action OnStartRecordingFailed;
 
-    /// <summary>
-    /// Invoked everytime an audio frame is collected. Includes the frame.
-    /// </summary>
-    event Action<int, float[], float> OnSampleReady;
+        /// <summary>
+        /// Invoked everytime an audio frame is collected. Includes the frame.
+        /// </summary>
+        event Action<int, float[], float> OnSampleReady;
 
-    /// <summary>
-    /// Invoked when the instance stop Recording.
-    /// </summary>
-    event Action OnStopRecording;
+        /// <summary>
+        /// Invoked when the instance stop Recording.
+        /// </summary>
+        event Action OnStopRecording;
 
-    void StartRecording(int sampleLen);
+        void StartRecording(int sampleLen);
 
-    void StopRecording();
+        void StopRecording();
 
-    bool IsRecording { get; }
+        bool IsRecording { get; }
 
-    /// <summary>
-    /// Settings determining how audio is encoded by the source.
-    ///
-    /// NOTE: Default values for AudioEncoding are server optimized to reduce latency.
-    /// </summary>
-    AudioEncoding AudioEncoding { get; }
+        /// <summary>
+        /// Settings determining how audio is encoded by the source.
+        ///
+        /// NOTE: Default values for AudioEncoding are server optimized to reduce latency.
+        /// </summary>
+        AudioEncoding AudioEncoding { get; }
 
-    /// <summary>
-    /// Return true if input is available.
-    /// </summary>
-    bool IsInputAvailable { get; }
+        /// <summary>
+        /// Return true if input is available.
+        /// </summary>
+        bool IsInputAvailable { get; }
 
-    /// <summary>
-    /// Checks for input
-    /// </summary>
-    void CheckForInput();
+        /// <summary>
+        /// Checks for input
+        /// </summary>
+        void CheckForInput();
+    }
 }

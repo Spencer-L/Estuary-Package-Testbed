@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.IO;
 
 namespace Mangrove
@@ -74,6 +75,12 @@ namespace Mangrove
 
 		public void Init()
 		{
+			StartCoroutine(InitMic());
+		}
+
+		private IEnumerator InitMic()
+		{
+			yield return new WaitForSeconds(3f);
 			_micSource.StartRecording(FrameLength);
 		}
 

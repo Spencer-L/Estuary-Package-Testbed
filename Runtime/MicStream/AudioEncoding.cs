@@ -8,44 +8,47 @@
 
 using System;
 
-[Serializable]
-public class AudioEncoding
+namespace Mangrove
 {
-    public enum Endian
+    [Serializable]
+    public class AudioEncoding
     {
-        Big,
-        Little
-    }
+        public enum Endian
+        {
+            Big,
+            Little
+        }
 
-    /// <summary>
-    /// The expected encoding of the mic pcm data
-    /// </summary>
-    public string encoding = "signed-integer";
+        /// <summary>
+        /// The expected encoding of the mic pcm data
+        /// </summary>
+        public string encoding = "signed-integer";
 
-    /// <summary>
-    /// The number of bits per sample
-    /// </summary>
-    public int bits = 16;
+        /// <summary>
+        /// The number of bits per sample
+        /// </summary>
+        public int bits = 16;
 
-    /// <summary>
-    /// The sample rate used to capture audio
-    /// </summary>
-    public int samplerate = 16000;
+        /// <summary>
+        /// The sample rate used to capture audio
+        /// </summary>
+        public int samplerate = 16000;
 
-    /// <summary>
-    /// The endianess of the data
-    /// </summary>
-    public Endian endian = Endian.Little;
+        /// <summary>
+        /// The endianess of the data
+        /// </summary>
+        public Endian endian = Endian.Little;
 
-    /// <summary>
-    /// The number of recording channels
-    /// </summary>
-    /// <returns></returns>
-    public int numChannels = 1;
+        /// <summary>
+        /// The number of recording channels
+        /// </summary>
+        /// <returns></returns>
+        public int numChannels = 1;
 
-    public override string ToString()
-    {
-        return $"audio/raw;bits={bits};rate={samplerate / 1000}k;encoding={encoding};endian={endian.ToString().ToLower()}";
+        public override string ToString()
+        {
+            return
+                $"audio/raw;bits={bits};rate={samplerate / 1000}k;encoding={encoding};endian={endian.ToString().ToLower()}";
+        }
     }
 }
-
