@@ -11,7 +11,7 @@ namespace Mangrove
     public class AIClient : MonoBehaviour
     {
         // Supported Events and Requests defined at the bottom
-        public bool isDebugging = false;
+        public bool isDebugging = true;
 
         private SocketIOUnity socket;
 
@@ -20,7 +20,7 @@ namespace Mangrove
         private MicController micController;
         private BotVoice botVoice;
 
-        [field: SerializeField] public string api = "ws://localhost:4000";
+        [field: SerializeField] public string api = "ws://127.0.0.1:4000";
 
         /// <summary>
         /// Singleton access
